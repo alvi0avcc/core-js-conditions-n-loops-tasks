@@ -409,30 +409,27 @@ function rotateMatrix(matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  function sort(arr2) {
-    const n = arr2.length;
-    if (n === 0) return [];
-    const lo = [];
-    const hi = [];
-    const pivot = arr2[0];
-    let loL = 0;
-    let hiL = 0;
-    for (let i = 1; i < n; i += 1) {
-      if (arr2[i] < pivot) {
-        lo[loL] = arr2[i];
-        loL += 1;
-      } else {
-        hi[hiL] = arr2[i];
-        hiL += 1;
+  function part(arrP, left, right) {
+    const linkArrP = arrP;
+    const pivot = linkArrP[right];
+    let i = left - 1;
+    for (let j = left; j < right; j += 1) {
+      if (linkArrP[j] < pivot) {
+        i += 1;
+        [linkArrP[i], linkArrP[j]] = [linkArrP[j], linkArrP[i]];
       }
     }
-    return [...sortByAsc(lo), pivot, ...sortByAsc(hi)];
+    [linkArrP[i + 1], linkArrP[right]] = [linkArrP[right], linkArrP[i + 1]];
+    return i + 1;
   }
-  const link = arr;
-  const temp = sort(arr);
-  const n = arr.length;
-  for (let i = 0; i < n; i += 1) link[i] = temp[i];
-  return link;
+  function quickSort(arrS, left = 0, right = arr.length - 1) {
+    if (left < right) {
+      const pivotId = part(arrS, left, right);
+      quickSort(arrS, left, pivotId - 1);
+      quickSort(arrS, pivotId + 1, right);
+    }
+  }
+  quickSort(arr);
 }
 
 /**
